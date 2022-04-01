@@ -14,6 +14,9 @@ void Start()
 {
     agent = GetComponent<NavMeshAgent>();
     pv = 3;
+        InvokeRepeating("fonction", 0.1f, 0.5f); // se répete tout les 0.5 sec
+        CancelInvoke("fonction");
+        Destroy(joueur);
 }
 
     // Update is called once per frame

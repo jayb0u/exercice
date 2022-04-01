@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class Arme : MonoBehaviour
 {
     public Text chargeur;
     int ammo = 8;
     bool reloading = false;
+    public AudioManager SoundManager;
+    public GameObject bomb;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -36,10 +40,13 @@ public class Arme : MonoBehaviour
             if (ammo > 0 && !reloading)
             {
                 ammo -= 1;
+                SoundManager.FaireFeu(false);
+                
             }
 
-            else if (ammo == 0)
+            else if (ammo <= 0)
             {
+                SoundManager.FaireFeu(true);
                 StartCoroutine(reload());
             }
             
@@ -49,6 +56,7 @@ public class Arme : MonoBehaviour
         if (Input.GetButtonDown("Fire2"))
         {
 
+            Instantiate(bomb, transform.position + transform.forward, Quaternion.identity);
         }
 
         IEnumerator reload()
@@ -57,7 +65,7 @@ public class Arme : MonoBehaviour
 
             yield return new WaitForSeconds(3f);
 
-            //Je ne suis plus occupé
+            //fini de recharger
             reloading = false;
             ammo = 8;
         }
